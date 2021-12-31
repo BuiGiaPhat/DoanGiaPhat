@@ -1,0 +1,75 @@
+﻿@model QLKS.Models.TBLNHANVIEN
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblNhanVien</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HO_TEN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HO_TEN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NGAY_SINH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NGAY_SINH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DIA_CHI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DIA_CHI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SDT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SDT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TAI_KHOAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TAI_KHOAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MAT_KHAU)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MAT_KHAU)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TBLCHUCVU.CHUC_VU)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TBLCHUCVU.CHUC_VU)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { idnv = Model.MA_NV }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

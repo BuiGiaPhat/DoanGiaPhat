@@ -1,0 +1,57 @@
+﻿@model IEnumerable<QLKS.Models.TBLTANG>
+
+@{
+    ViewBag.Title = "Danh sách tầng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("Index","Index")">Admin</a>
+    </li>
+    <li class="breadcrumb-item active">Danh sách tầng</li>
+</ol>
+<p>
+    @if (Session["NV"] != null && (((QLKS.Models.TBLNHANVIEN)Session["NV"]).MA_CHUC_VU <= 2))
+    {
+        @Html.ActionLink("Thêm Tầng", "Create")
+    }
+</p>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Danh sách các tầng
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>
+                        Tầng
+                    </th>
+                    @if (Session["NV"] != null && (((QLKS.Models.TBLNHANVIEN)Session["NV"]).MA_CHUC_VU <= 2))
+                    {
+                        <th></th>
+                    }
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TEN_TANG)
+                        </td>
+                        @if (Session["NV"] != null && (((QLKS.Models.TBLNHANVIEN)Session["NV"]).MA_CHUC_VU <= 2))
+                        {
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { idtang = item.MA_TANG }) |
+                                @Html.ActionLink("Delete", "Delete", new { idtang = item.MA_TANG })
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at @DateTime.Now</div>
+</div>

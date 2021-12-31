@@ -1,0 +1,43 @@
+﻿@model QLKS.Models.TBLDICHVU
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblDichVu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TEN_DV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TEN_DV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GIA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GIA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DON_VI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DON_VI)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { iddv = Model.MA_DV }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

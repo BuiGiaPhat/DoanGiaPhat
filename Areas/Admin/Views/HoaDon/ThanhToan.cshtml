@@ -1,0 +1,265 @@
+﻿@model QLKS.Models.TBLHOADON
+
+@{
+    ViewBag.Title = "Thanh Toán";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .btn-success {
+        background-color: #0352fc !important;
+        border: 1px solid #0352fc !important;
+    }
+
+        .btn-success:hover {
+            background-color: #0352fc !important;
+            border: 1px solid #0352fc !important;
+        }
+</style>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="@Url.Action("Index","Index")">Admin</a>
+    </li>
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","HoaDon")">Hóa đơn</a></li>
+    <li class="breadcrumb-item active"><a href="@Url.Action("ChiTietHoaDon","HoaDon",new { id = Model.MA_HD })">@Html.DisplayFor(model => model.MA_HD)</a></li>
+    <li class="breadcrumb-item active">Thanh toán</li>
+</ol>
+@using (Html.BeginForm("XacNhanThanhToan", "HoaDon"))
+{
+    @Html.AntiForgeryToken()
+    <div class="card mb-3" id="hoadon">
+        <div class="card-header">
+            <i class="fa fa-table"></i> Hóa đơn số @Html.DisplayFor(model => model.MA_HD)
+        </div>
+        <div class="card-body">
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.MA_HD)
+                        @Html.Hidden("tien_phong", (Double)ViewBag.tien_phong)
+                        @Html.Hidden("tien_dich_vu", (Double)ViewBag.tien_dich_vu)
+                        @try
+                        {
+                            @Html.Hidden("phu_thu", (Double)ViewBag.phu_thu)
+                            @Html.Hidden("tong_tien", (Double)ViewBag.tong_tien)
+                        }
+                        catch
+                        {
+                        }
+
+
+
+
+                        <table class="table table-bordered table-responsive table-striped" cellspacing="0">
+                            <tr>
+                                <td>Nhân Viên</td>
+                                <td>@ViewBag.ho_ten</td>
+                            </tr>
+                            <tr>
+                                <td>Khách hàng</td>
+                                @if (Model.TBLPHIEUDATPHONG.MA_KH == null)
+                                {
+                                    List<QLKS.Areas.Admin.Models.KhachHang> likh = Newtonsoft.Json.JsonConvert.DeserializeObject<List<QLKS.Areas.Admin.Models.KhachHang>>(Model.TBLPHIEUDATPHONG.THONG_TIN_KHACH_THUE);
+                                    <td>@likh[0].hoten</td>
+                                }
+                                else
+                                {
+                                    <td>@Model.TBLPHIEUDATPHONG.TBLKHACHHANG.HO_TEN</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td>Khách đi cùng</td>
+                                <td>
+                                    <table width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Họ tên</th>
+                                                <th>Tuổi</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                try
+                                                {
+                                                    List<QLKS.Areas.Admin.Models.KhachHang> dskh = Newtonsoft.Json.JsonConvert.DeserializeObject<List<QLKS.Areas.Admin.Models.KhachHang>>(Model.TBLPHIEUDATPHONG.THONG_TIN_KHACH_THUE);
+                                                    for (var i = 1; i < dskh.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>@dskh[i].hoten</td>
+                                                            <td>@dskh[i].tuoi</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                catch
+                                                {
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Số phòng</td>
+                                <td>@Model.TBLPHIEUDATPHONG.TBLPHONG.SO_PHONG</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày vào</td>
+                                <td>@Model.TBLPHIEUDATPHONG.NGAY_VAO</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày dự kiến ra</td>
+                                <td>@Model.TBLPHIEUDATPHONG.NGAY_RA</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày ra</td>
+                                <td>@DateTime.Now</td>
+                            </tr>
+                            <tr>
+                                <td>Tiền phòng</td>
+                                <td>
+                                    <table width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Giá phòng</th>
+                                                <th>Số ngày thuê</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Model.TBLPHIEUDATPHONG.TBLPHONG.TBLLOAIPHONG.GIA</td>
+                                                <td>@ViewBag.so_ngay</td>
+                                                <td>@ViewBag.tien_phong</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phụ thu</td>
+                                <td>
+                                    <table width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Giá phòng</th>
+                                                <th>Số ngày phụ thu</th>
+                                                <th>Tỉ lệ phụ thu</th>
+                                                <th>Thành tiền</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Model.TBLPHIEUDATPHONG.TBLPHONG.TBLLOAIPHONG.GIA</td>
+                                                <td>@ViewBag.so_ngay_phu_thu</td>
+                                                <td>@Model.TBLPHIEUDATPHONG.TBLPHONG.TBLLOAIPHONG.TI_LE_PHU_THU</td>
+                                                <td>@ViewBag.phu_thu</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i> Danh sách dịch vụ đã đặt
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" cellspacing="0">
+                                    <tr>
+                                        <th>
+                                            Tên dịch vụ
+                                        </th>
+                                        <th>
+                                            Giá
+                                        </th>
+                                        <th>
+                                            Đơn vị
+                                        </th>
+                                        <th>
+                                            Số lượng
+                                        </th>
+                                        <th>
+                                            Thành tiền
+                                        </th>
+                                    </tr>
+                                    @{
+                                        List<QLKS.Models.TBLDICHVUDADAT> ds = (List<QLKS.Models.TBLDICHVUDADAT>)ViewBag.list_dv;
+                                        List<decimal> tt = (List<decimal>)ViewBag.list_tt;
+                                        for (int i = 0; i < ds.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => ds[i].TBLDICHVU.TEN_DV)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => ds[i].TBLDICHVU.GIA)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => ds[i].TBLDICHVU.DON_VI)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => ds[i].SO_LUONG)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => tt[i])
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr><td>Tổng:</td><td></td><td></td><td></td><td>@ViewBag.tien_dich_vu</td></tr>
+                                    }
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    Công thức tính tiền phòng:<br />
+                    Tổng tiền = (Ngày ra - Ngày vào) x giá phòng + |Ngày ra - Ngày dự kiến ra| * tỉ lệ phụ thu.
+                </div>
+
+
+            </div>
+            <hr />
+            <div class="form-group">
+                @Html.Label("Tổng tiền", htmlAttributes: new { @class = "control-label col-md-8" })
+                <div class="col-md-10">
+                    @Html.TextBox("tong_tien", ((Decimal)ViewBag.tong_tien).ToString("C"), new { @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    if (Model.MA_TINH_TRANG == 1)
+    {
+        <input type="submit" value="Thanh Toán" class="btn btn-success btn-lg" />
+    }
+    <input type="submit" value="In hóa đơn" class="btn btn-info btn-lg" onclick="printDiv('hoadon')" />
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script language="javascript" type="text/javascript">
+    function printDiv(divID) {
+        var divElements = document.getElementById(divID).innerHTML;
+        var oldPage = document.body.innerHTML;
+        document.body.innerHTML =
+            "<html><head><title></title></head><body>" +
+            divElements + "</body>";
+        window.print();
+        document.body.innerHTML = oldPage;
+    }
+</script>
